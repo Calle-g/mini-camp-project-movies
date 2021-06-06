@@ -30,7 +30,6 @@ export const MovieDetails = () => {
         json.recommendations = json.recommendations.results.filter((recommendation) => {
           return recommendation.poster_path;
         })
-        console.log(json)
         setMovie(json)
       })
       .catch((error) => console.log(error))

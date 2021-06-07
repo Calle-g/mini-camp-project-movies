@@ -12,4 +12,7 @@ export const Header = styled.div`
   grid-template-columns: 80px 4fr 1fr;
   grid-gap: 10px;
   border-bottom: 1px solid #ffffff;
+  @media screen and (max-width: 768px) {
+    grid-template-columns: 80px 1fr 10px;;
+  }
 `;

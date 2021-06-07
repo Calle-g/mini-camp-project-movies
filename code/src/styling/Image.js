@@ -2,8 +2,8 @@ import styled from 'styled-components'
 
 export const Image = styled.img`
     width: 100%;
-    height: 100%;
-    display:flex;
+    height: intrinsic;
+    display: flex;
     object-fit: cover;
     align-self: center;
     ${(props) => props.hoverable

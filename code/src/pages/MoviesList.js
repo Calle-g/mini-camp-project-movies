@@ -6,20 +6,20 @@ import { Image } from '../styling/Image'
 import { Spinner } from '../styling/Spinner'
 import { FlexContainer } from '../styling/FlexContainer'
 
-export const MoviesList = ({ movies, setMovies }) => {
+export const MoviesList = ({ movies, setMovies, storedFilter, storedPage }) => {
   const [maxPages, setMaxPages] = useState(1);
-  const [page, setPage] = useState(1);
   const { filter } = useParams();
 
-  const fetchMovies = (next) => {
-    const nextPage = next ? page + 1 : 1;
+  const fetchMovies = () => {
+    const next = storedFilter.current === filter;
+    const nextPage = next ? storedPage.current + 1 : 1;
     fetch(`https://api.themoviedb.org/3/movie/${filter || 'popular'}?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&page=${nextPage}`)
       .then((res) => {
         if (res.ok) {
           if (next) {
-            setPage(page + 1)
+            storedPage.current += 1;
           } else {
-            setPage(1)
+            storedPage.current = 1;
           }
           return res.json();
         }
@@ -30,7 +30,8 @@ export const MoviesList = ({ movies, setMovies }) => {
             return entry.poster_path;
           })))
         } else {
-          setMaxPages(json.total_pages)
+          setMaxPages(json.total_pages);
+          storedFilter.current = filter;
           setMovies(json.results.filter((entry) => {
             return entry.poster_path;
           }))
@@ -40,7 +41,9 @@ export const MoviesList = ({ movies, setMovies }) => {
   }
 
   useEffect(() => {
-    fetchMovies();
+    if (movies.length === 0 || storedFilter.current !== filter) {
+      fetchMovies();
+    }
   }, [filter])
 
   return (
@@ -61,8 +64,8 @@ export const MoviesList = ({ movies, setMovies }) => {
       </FlexContainer>
       <InfiniteScroll
         dataLength={movies.length}
-        next={() => fetchMovies(true)}
-        hasMore={page !== maxPages}
+        next={() => fetchMovies()}
+        hasMore={storedPage !== maxPages}
         scrollThreshold={0.9}
         loader={<Spinner>Loading...</Spinner>}>
         <Grid>

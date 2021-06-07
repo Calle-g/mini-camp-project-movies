@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const Header = styled.div`
+export const HeaderWrapper = styled.div`
   position: sticky;
   position: -webkit-sticky;
   z-index: 999;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { Iframe } from '../styling/Iframe'
+import YouTube from 'react-youtube'
 import { DuoWrapper } from '../styling/DuoWrapper'
 import { Image } from '../styling/Image'
 import { Container } from '../styling/Container'
@@ -36,7 +36,7 @@ export const MovieDetails = () => {
       .finally(setLoading(false))
   }, [movieId])
   return (
-    <div>
+    <Container>
       {loading
         ? <Spinner>Loading...</Spinner>
         : (
@@ -47,10 +47,8 @@ export const MovieDetails = () => {
                 <Image src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
                 {movie.videos.length > 0
                   ? (
-                    <Iframe>
-                      <iframe title="Youtube" src={`https://www.youtube.com/embed/${movie.videos[0].key}?modestbranding=1`} frameBorder="0" allowFullScreen />
-                    </Iframe>)
-                  : movie.backdrop_path
+                    <YouTube videoId={movie.videos[0].key} opts={{ width: '100%', height: '100%' }} />
+                  ) : movie.backdrop_path
                   && (
                     <Image hideOnShrink src={`https://image.tmdb.org/t/p/w1280${movie.backdrop_path}`} alt={movie.title} />
                   )}
@@ -92,6 +90,6 @@ export const MovieDetails = () => {
             )}
           </>
         )}
-    </div>
+    </Container>
   )
 }

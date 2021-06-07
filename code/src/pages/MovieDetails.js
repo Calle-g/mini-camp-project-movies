@@ -50,7 +50,8 @@ export const MovieDetails = () => {
                     <Iframe>
                       <iframe title="Youtube" src={`https://www.youtube.com/embed/${movie.videos[0].key}?modestbranding=1`} frameBorder="0" allowFullScreen />
                     </Iframe>)
-                  : (
+                  : movie.backdrop_path
+                  && (
                     <Image hideOnShrink src={`https://image.tmdb.org/t/p/w1280${movie.backdrop_path}`} alt={movie.title} />
                   )}
               </DuoWrapper>
